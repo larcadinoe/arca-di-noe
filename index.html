@@ -120,8 +120,8 @@
 </head>
 <body class="antialiased min-h-screen flex flex-col items-center p-3 sm:p-6">
 
-    <!-- Audio Player - Collegamento locale al file Surriento.mp3 -->
-    <audio id="bg-music" loop preload="none">
+    <!-- Audio Player - Collegamento locale al file Surriento.mp3 con autoplay -->
+    <audio id="bg-music" loop preload="auto">
         <source src="Surriento.mp3" type="audio/mpeg">
     </audio>
 
@@ -353,7 +353,7 @@
                          2. <strong>La Cantinaccia del Popolo:</strong> Local food. <a href="https://www.google.com/maps/search/?api=1&query=La+Cantinaccia+del+Popolo+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a><br><br>
                          3. <strong>Bagni Delfino:</strong> Fresh seafood. <a href="https://www.google.com/maps/search/?api=1&query=Ristorante+Bagni+Delfino+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a><br><br>
                          4. <strong>Il Buco:</strong> Michelin-starred. <a href="https://www.google.com/maps/search/?api=1&query=Il+Buco+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a><br><br>
-                         5. <strong>Bistrò:</strong> A few steps away. <a href="https://www.google.com/maps/search/?api=1&query=Bistrò+Sorrento+Via+Atigliana" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a>`
+                         5. <strong>Bistrò:</strong> A few steps away. <a href="https://www.google.com/maps/search/?api=1&query=Bistrò+Sorrento+Via+Atigliana" target=\"_blank\" class=\"map-link\"><i class=\"fas fa-map-marker-alt\"></i> Map</a>`
                 }
             },
             shopping: {
@@ -428,46 +428,47 @@
             const musicToggle = document.getElementById('music-toggle');
             const musicIcon = document.getElementById('music-icon');
 
-            musicToggle.onclick = async () => {
-                if (isTransitioning) return;
+            // Funzione per la riproduzione sicura (gestisce le restrizioni browser)
+            const playAudio = async () => {
+                if (isTransitioning || isMusicPlaying) return;
                 isTransitioning = true;
-
+                
                 try {
-                    if (isMusicPlaying) {
-                        audio.pause();
-                        audio.currentTime = 0; // Reset della traccia
-                        musicIcon.className = "fas fa-music text-stone-900";
-                        musicToggle.classList.remove('music-active');
-                        isMusicPlaying = false;
-                    } else {
-                        // Feedback visivo di caricamento
-                        musicIcon.className = "fas fa-spinner music-loading text-amber-800";
-                        
-                        // Forza il ricaricamento del file audio
-                        audio.load();
-                        
-                        await new Promise(resolve => setTimeout(resolve, 100));
-
-                        const playPromise = audio.play();
-                        
-                        if (playPromise !== undefined) {
-                            playPromise.then(() => {
-                                musicIcon.className = "fas fa-volume-up text-amber-800";
-                                musicToggle.classList.add('music-active');
-                                isMusicPlaying = true;
-                            }).catch(error => {
-                                console.error("Errore riproduzione:", error);
-                                musicIcon.className = "fas fa-music text-red-500";
-                                isMusicPlaying = false;
-                            });
-                        }
-                    }
+                    if (audio.readyState === 0) audio.load();
+                    await audio.play();
+                    musicIcon.className = "fas fa-volume-up text-amber-800";
+                    musicToggle.classList.add('music-active');
+                    isMusicPlaying = true;
+                    
+                    // Rimuovi i listener di autoplay una volta partita
+                    document.removeEventListener('click', playAudio);
+                    document.removeEventListener('touchstart', playAudio);
                 } catch (e) {
-                    console.error("Errore generale audio:", e);
+                    console.log("Autoplay bloccato. Attesa interazione utente.");
                 } finally {
-                    setTimeout(() => { isTransitioning = false; }, 300);
+                    isTransitioning = false;
                 }
             };
+
+            // Logica Toggle Manuale
+            musicToggle.onclick = async () => {
+                if (isTransitioning) return;
+                if (isMusicPlaying) {
+                    audio.pause();
+                    musicIcon.className = "fas fa-music text-stone-900";
+                    musicToggle.classList.remove('music-active');
+                    isMusicPlaying = false;
+                } else {
+                    playAudio();
+                }
+            };
+
+            // Tentativo di autoplay al caricamento
+            playAudio();
+
+            // Fallback per autoplay: avvia al primo tocco o clic sulla pagina
+            document.addEventListener('click', playAudio, { once: true });
+            document.addEventListener('touchstart', playAudio, { once: true });
 
             document.getElementById('back-btn').onclick = closeDetail;
         }
