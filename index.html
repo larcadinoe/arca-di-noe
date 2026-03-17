@@ -112,13 +112,17 @@
             100% { transform: scale(1); }
         }
         .music-active { animation: pulse-music 2s infinite ease-in-out; }
+        
+        /* Animazione caricamento */
+        .music-loading { animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col items-center p-3 sm:p-6">
 
-    <!-- Audio Player - Enrico Caruso: Torna a Surriento -->
-    <audio id="bg-music" loop preload="auto">
-        <source src="https://ia800201.us.archive.org/21/items/78_torna-a-surriento-come-back-to-sorrento_enrico-caruso-ernesto-de-curtis_gbia0011502b/01%20-%20Torna%20a%20Surriento%20%28Come%20Back%20To%20Sorrento%29.mp3" type="audio/mpeg">
+    <!-- Audio Player - Collegamento locale al file Surriento.mp3 -->
+    <audio id="bg-music" loop preload="none">
+        <source src="Surriento.mp3" type="audio/mpeg">
     </audio>
 
     <div class="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl border border-stone-200 overflow-hidden relative min-h-[92vh] flex flex-col">
@@ -259,7 +263,7 @@
             },
             parking: {
                 id: 'parking', icon: 'fa-car',
-                title: { it: "Auto", en: "Auto" },
+                title: { it: "Parcheggio", en: "Parking" },
                 intro: { it: "Informazioni parcheggio.", en: "Parking information." },
                 content: {
                     it: `Per il vostro veicolo o per esplorare Sorrento e la Costiera in totale libertà, vi consigliamo i servizi professionali di:<br><br>
@@ -341,7 +345,7 @@
                 intro: { it: "Consigli gastronomici.", en: "Dining tips." },
                 content: {
                     it: `1. <strong>Da Franco:</strong> Pizza leggendaria. <a href="https://www.google.com/maps/search/?api=1&query=Pizzeria+Da+Franco+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a><br><br>
-                         2. <strong>La Cantinaccia del Popolo:</strong> Cucina tipica. <a href="https://www.google.com/maps/search/?api=1&query=La+Cantinaccia+del+Popolo+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a><br><br>
+                         2. <strong>La Cantinaccia del Popolo:</strong> Cucina tipica. <a href="https://www.google.com/maps/search/?api=1&query=Cantinaccia+del+Popolo+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a><br><br>
                          3. <strong>Bagni Delfino:</strong> Pesce fresco vista mare. <a href="https://www.google.com/maps/search/?api=1&query=Ristorante+Bagni+Delfino+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a><br><br>
                          4. <strong>Il Buco:</strong> Cucina stellata. <a href="https://www.google.com/maps/search/?api=1&query=Il+Buco+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a><br><br>
                          5. <strong>Bistrò:</strong> A due passi da qui. <a href="https://www.google.com/maps/search/?api=1&query=Bistrò+Sorrento+Via+Atigliana" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a>`,
@@ -359,16 +363,18 @@
                 content: {
                     it: `1. <strong>Supermercato Pollio:</strong> Spesa quotidiana. <a href="https://www.google.com/maps/search/?api=1&query=Supermercato+Pollio+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a><br><br>
                          2. <strong>Bar Fauno:</strong> Storico bar in Piazza Tasso. <a href="https://www.google.com/maps/search/?api=1&query=Bar+Fauno+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a><br><br>
-                         3. <strong>Negozi Corso Italia:</strong> La via principale dello shopping. <a href="https://www.google.com/maps/search/?api=1&query=Corso+Italia+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a><br><br>
+                         3. <strong>Profumeria Giusy:</strong> Profumi e cosmetica. <a href="https://www.google.com/maps/search/?api=1&query=Profumeria+Giusy+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a><br><br>
                          4. <strong>I Giardini di Cataldo:</strong> Eccellenza del Limoncello artigianale. <a href="https://www.google.com/maps/search/?api=1&query=I+Giardini+di+Cataldo+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a><br><br>
                          5. <strong>Sandali Siniscalchi:</strong> Tipici sandali sorrentini fatti a mano. <a href="https://www.google.com/maps/search/?api=1&query=Sandali+Siniscalchi+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a><br><br>
-                         6. <strong>Intarsio Sorrentino:</strong> Botteghe d'arte del legno nel centro storico. <a href="https://www.google.com/maps/search/?api=1&query=Mastro+Giuseppe+Sorrento+Intarsio" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a>`,
+                         6. <strong>Intarsio Sorrentino:</strong> Botteghe d'arte del legno nel centro storico. <a href="https://www.google.com/maps/search/?api=1&query=Mastro+Giuseppe+Sorrento+Intarsio" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a><br><br>
+                         7. <strong>Negozi Corso Italia:</strong> La via principale dello shopping. <a href="https://www.google.com/maps/search/?api=1&query=Corso+Italia+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a>`,
                     en: `1. <strong>Pollio Supermarket:</strong> For your groceries. <a href="https://www.google.com/maps/search/?api=1&query=Supermercato+Pollio+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a><br><br>
                          2. <strong>Bar Fauno:</strong> Iconic bar in Piazza Tasso. <a href="https://www.google.com/maps/search/?api=1&query=Bar+Fauno+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a><br><br>
-                         3. <strong>Corso Italia Shops:</strong> The main shopping street. <a href="https://www.google.com/maps/search/?api=1&query=Corso+Italia+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a><br><br>
+                         3. <strong>Giusy Perfumery:</strong> Perfumes and cosmetics. <a href="https://www.google.com/maps/search/?api=1&query=Profumeria+Giusy+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a><br><br>
                          4. <strong>I Giardini di Cataldo:</strong> Famous artisanal Limoncello. <a href="https://www.google.com/maps/search/?api=1&query=I+Giardini+di+Cataldo+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a><br><br>
                          5. <strong>Sandali Siniscalchi:</strong> Traditional handmade Sorrento sandals. <a href="https://www.google.com/maps/search/?api=1&query=Sandali+Siniscalchi+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a><br><br>
-                         6. <strong>Wood Marquetry:</strong> Master artisan inlay shops in the old town. <a href="https://www.google.com/maps/search/?api=1&query=Mastro+Giuseppe+Sorrento+Intarsio" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a>`
+                         6. <strong>Wood Marquetry:</strong> Master artisan inlay shops in the old town. <a href="https://www.google.com/maps/search/?api=1&query=Mastro+Giuseppe+Sorrento+Intarsio" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a><br><br>
+                         7. <strong>Corso Italia Shops:</strong> The main shopping street. <a href="https://www.google.com/maps/search/?api=1&query=Corso+Italia+Sorrento" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a>`
                 }
             },
             transport: {
@@ -392,7 +398,7 @@
                     it: `<strong>Maria</strong> <a href="https://wa.me/393332012216" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Chat</a><br><br>
                          <strong>Noè</strong> <a href="https://wa.me/393357417477" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Chat</a><br><br>
                          <strong>Emergenza Medica</strong> <a href="tel:118" class="map-link">Chiama 118</a><br><br>
-                         <strong>Taxi Service</strong> <a href="https://wa.me/390818782204" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Chat</a> <a href="https://www.google.com/maps/search/?api=1&query=Taxi+Sorrento+Piazza+Tasso" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Mappa</a>`,
+                         <strong>Taxi Service</strong> <a href="https://wa.me/390818782204" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Chat</a> <a href="https://www.google.com/maps/search/?api=1&query=Taxi+Sorrento+Piazza+Tasso" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Map</a>`,
                     en: `<strong>Maria</strong> <a href="https://wa.me/393332012216" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Chat</a><br><br>
                          <strong>Noè</strong> <a href="https://wa.me/393357417477" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> Chat</a><br><br>
                          <strong>Medical Emergency</strong> <a href="tel:118" class="map-link">Call 118</a><br><br>
@@ -403,6 +409,7 @@
 
         let currentLang = 'it';
         let isMusicPlaying = false;
+        let isTransitioning = false;
 
         function initApp() {
             renderDashboard();
@@ -421,19 +428,45 @@
             const musicToggle = document.getElementById('music-toggle');
             const musicIcon = document.getElementById('music-icon');
 
-            musicToggle.onclick = () => {
-                if (isMusicPlaying) {
-                    audio.pause();
-                    musicIcon.className = "fas fa-music text-stone-900";
-                    musicToggle.classList.remove('music-active');
-                } else {
-                    audio.play().catch(e => {
-                        console.log("Errore riproduzione o interazione necessaria");
-                    });
-                    musicIcon.className = "fas fa-volume-up text-amber-800";
-                    musicToggle.classList.add('music-active');
+            musicToggle.onclick = async () => {
+                if (isTransitioning) return;
+                isTransitioning = true;
+
+                try {
+                    if (isMusicPlaying) {
+                        audio.pause();
+                        audio.currentTime = 0; // Reset della traccia
+                        musicIcon.className = "fas fa-music text-stone-900";
+                        musicToggle.classList.remove('music-active');
+                        isMusicPlaying = false;
+                    } else {
+                        // Feedback visivo di caricamento
+                        musicIcon.className = "fas fa-spinner music-loading text-amber-800";
+                        
+                        // Forza il ricaricamento del file audio
+                        audio.load();
+                        
+                        await new Promise(resolve => setTimeout(resolve, 100));
+
+                        const playPromise = audio.play();
+                        
+                        if (playPromise !== undefined) {
+                            playPromise.then(() => {
+                                musicIcon.className = "fas fa-volume-up text-amber-800";
+                                musicToggle.classList.add('music-active');
+                                isMusicPlaying = true;
+                            }).catch(error => {
+                                console.error("Errore riproduzione:", error);
+                                musicIcon.className = "fas fa-music text-red-500";
+                                isMusicPlaying = false;
+                            });
+                        }
+                    }
+                } catch (e) {
+                    console.error("Errore generale audio:", e);
+                } finally {
+                    setTimeout(() => { isTransitioning = false; }, 300);
                 }
-                isMusicPlaying = !isMusicPlaying;
             };
 
             document.getElementById('back-btn').onclick = closeDetail;
